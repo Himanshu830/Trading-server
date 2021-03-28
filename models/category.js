@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 // const moment = require('moment');
 const _ = require('lodash');
-const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/Status');
+const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/status');
 
 const categorySchema = mongoose.Schema({
   id: Number,

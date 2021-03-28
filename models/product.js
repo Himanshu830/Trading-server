@@ -4,7 +4,7 @@ const validator = require('validator');
 const _ = require('lodash');
 const Category = require('./category')
 const User = require('./user')
-const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/Status');
+const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/status');
 
 const productSchema = mongoose.Schema({
     // id: Number,

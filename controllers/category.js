@@ -1,5 +1,5 @@
 const Category = require('../models/category');
-const { STATUS_ACTIVE } = require('../constant/Status');
+const { STATUS_ACTIVE } = require('../constant/status');
 
 const listCategory = async (req, res) => {
     try {
