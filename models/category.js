@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 // const moment = require('moment');
 const _ = require('lodash');
+const User = require('./user')
 const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/status');
 
 const categorySchema = mongoose.Schema({
@@ -17,6 +18,10 @@ const categorySchema = mongoose.Schema({
     ref: 'Category',
     index: true
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User
+  },
   status: {
     type: Number,
     enum: [STATUS_INACTIVE, STATUS_ACTIVE],
@@ -27,12 +32,14 @@ const categorySchema = mongoose.Schema({
 });
 
 //Static methods
-categorySchema.statics.getActiveCategory = async ({ parent, limit = 10 }) => {
+categorySchema.statics.getActiveCategory = async ({ name, parent, limit = 10 }) => {
   let condition = { status: STATUS_ACTIVE };
   if (parent) {
     condition.parent = mongoose.Types.ObjectId.isValid(parent) ? parent : null;
   }
-
+  if(name) {
+    condition.name = {$regex: name, $options: 'i'}
+  }
   try {
     const result = await Category.find(condition)
       .select({
@@ -41,6 +48,7 @@ categorySchema.statics.getActiveCategory = async ({ parent, limit = 10 }) => {
         "parent": true,
         "status": true
       })
+      .populate('parent')
       .limit(limit)
       .exec();
 

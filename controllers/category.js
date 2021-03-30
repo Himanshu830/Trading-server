@@ -24,119 +24,63 @@ const findCategory = async (req, res) => {
     }
 };
 
-// const saveCategory = async (req, res) => {
-//     let categoryJson = buildCategory(req.body);
-//     let category = new Category(categoryJson)
-//     let parent = req.body.parent ? req.body.parent : null;
+const saveCategory = async (req, res) => {
+    const data = req.body;
 
-//     try{
-//         await category.save();
-//         await category.buildAncestors(parent);
-//         res.status(201).send({category});
-//     } catch(error) {
-//         res.status(500).send(error);
-//     }
-// };
+    let categoryData = {
+        name: data.name,
+        parent: data.parent ? data.parent : null
+    }
+    let category = new Category(categoryData)
 
-// const relatedCategory = async (req, res) => {
-//   const { id } = req.query;
-//   try {
-//     const category = await Category.findOne({_id: id});
+    try{
+        await category.save();
+        res.status(201).send({category});
+    } catch(error) {
+        res.status(500).send(error);
+    }
+};
 
-//     if(!category) {
-//       return res.status(404).send();
-//     }
+const updateCategory = async (req, res) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['name', 'parent', 'userId', 'status'];
+  const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
-//     let parentId;
-//     if(category.parent === null) {
-//       parentId = category._id;
-//     } else {
-//       parentId = category.parent;
-//     }
+  if(!isValidOperation) {
+    return res.status(400).send({error: "Invalid updates!"});
+  }
 
-//     const relatedCategory = await Category.find({parent: parentId, status: STATUS_ACTIVE})
-//       .sort({"_id": 1})
-//       .limit(10)
-//       .exec();
-//     res.send({ "status": "success", "result": relatedCategory });
-//   } catch(error) {
-//     res.status(500).send();
-//   }
-// };
+  try {
+    const category = await Category.findOne({_id: req.params.id});
+    if(!category) {
+      return res.status(404).send();
+    }
 
-// const buildCategory = (data) => {
-//     let parent = data.parent ? data.parent : null;
+    updates.forEach((update) => category[update] = req.body[update]);
+    await category.save();
+    res.send(category);
+  } catch(error) {
+    res.status(400).send();
+  }
+};
 
-//     return {
-//         name: data.name,
-//         description: data.description,
-//         parent,
-//         userId: req.user.userId,
-//         ancestors: data.ancestors,
-//         status: data.status,
-//     }
-// }
+const deleteCategory = async (req, res) => {
+  try {
+    const category = await Category.findOneAndDelete({_id: req.params.id});
+    if(!category) {
+      return res.status(404).send();
+    }
 
-// const findCategory = async (req, res) => {
-//   const _id = req.params.id;
-//   try {
-//     const category = await Category.findOne({_id: req.params.id});
-
-//     if(!category) {
-//       return res.status(404).send();
-//     }
-//     res.send(category);
-//   } catch(error) {
-//     res.status(500).send();
-//   }
-// };
-
-// const updateCategory = async (req, res) => {
-//   const updates = Object.keys(req.body);
-//   const allowedUpdates = ['name', 'slug', 'parent', 'ancestors', 'status', 'isFeature', 'icon', 'metaTitle', 'metaDesc', 'metaKeyword', 'description'];
-//   const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
-
-//   if(!isValidOperation) {
-//     return res.status(400).send({error: "Invalid updates!"});
-//   }
-
-//   try {
-//     const category = await Category.findOne({_id: req.params.id});
-//     if(!category) {
-//       return res.status(404).send();
-//     }
-
-//     updates.forEach((update) => category[update] = req.body[update]);
-//     await category.save();
-//     res.send(category);
-//   } catch(error) {
-//     res.status(400).send();
-//   }
-// };
-
-// const deleteCategory = async (req, res) => {
-//   try {
-//     const category = await Category.findOneAndDelete({_id: req.params.id});
-//     if(!category) {
-//       return res.status(404).send();
-//     }
-
-//     res.send(category);
-//   } catch(error) {
-//     res.status(500).send();
-//   }
-// };
-
-// const findCategoryWithSub = async (req, res) => {
-//   try{
-//     category = await Category.getCategoryWithSubcateogry(req.query);
-//     res.send({ "status": "success", "result": category });
-//   } catch(error) {
-//     res.status(500).send(error);
-//   }
-// };
+    res.send(category);
+  } catch(error) {
+    res.status(500).send();
+  }
+};
 
 module.exports = {
     listCategory,
-    findCategory
+    findCategory,
+    saveCategory,
+    updateCategory,
+    deleteCategory
 }
