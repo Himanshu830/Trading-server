@@ -24,7 +24,7 @@ const router = new express.Router();
 // })
 
 router.get('/product', auth, listProduct);
-router.get('/product/:productId', auth, getProductById);
+router.get('/product/:productId', getProductById);
 // router.post('/product', upload.single('image'), createProduct, (error, req, res, next) => {
 //     res.status(400).send({error: error.message});
 // });

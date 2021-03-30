@@ -30,7 +30,8 @@ const listProduct = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { productId } = req.params;
-        product = await Product.getProductById(productId, req.user);
+        // product = await Product.getProductById(productId, req.user);
+        product = await Product.getProductById(productId);
         res.send({ "status": "success", "result": product });
     } catch (error) {
         res.status(500).send(error);
