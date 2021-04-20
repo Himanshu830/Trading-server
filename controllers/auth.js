@@ -7,9 +7,14 @@ const {
     resetPasswordConfirmationMail } = require('../helper/mail')
 
 const signup = async (req, res) => {
-    const user = new User(req.body)
-
     try {
+        let userExists = await User.findOne({email: req.body.email});
+
+        if(userExists && userExists._id) {
+            res.status(400).send({error: `User with ${req.body.email} is already exists.`});
+        }
+
+        const user = new User(req.body)
         await user.save()
         const token = await user.generateAuthToken()
 
@@ -22,7 +27,7 @@ const signup = async (req, res) => {
         res.status(201).json({ user, token })     
     } catch (error) {
         console.log(error)
-        res.status(400).send({error: 'Email is taken'})
+        res.status(400).send({error: 'Something went wrong. Please contact to administrator.'})
     }
 }
 
