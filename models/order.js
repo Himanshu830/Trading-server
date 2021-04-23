@@ -47,6 +47,11 @@ const orderSchema = mongoose.Schema({
         },
         required: [true, 'Category Id is required.']
     },
+    type: {
+        type: String,
+        enum: ['Sell', 'Buy'],
+        default: 'Sell'
+    },
     deliveryCountry: {
         type: String,
         required: true,
@@ -95,6 +100,7 @@ orderSchema.statics.getOrderByUser = async (user=null, { title, categoryId, orde
         const result = await Order.find(condition)
             .select({
                 "_id": true,
+                "type": true,
                 "title": true,
                 "deliveryCountry": true,
                 "userId": true,
@@ -126,6 +132,7 @@ orderSchema.statics.getOrderById = async (productId, user=null ) => {
         const result = await Order.findOne(condition)
             .select({
                 "_id": true,
+                "type": true,
                 "title": true,
                 "details": true,
                 "deliveryCountry": true,
