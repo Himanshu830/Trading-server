@@ -42,6 +42,8 @@ const activateAccount = async (req, res) => {
 
         // send email
         singupVerifiedMail(user)
+
+        res.send({success: true})
     } catch (e) {
         res.status(400).send({error: 'Invalid link'})
     }

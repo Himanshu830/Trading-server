@@ -1,8 +1,14 @@
-const sgMail = require('@sendgrid/mail')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'write2ranjan3@gmail.com',
+        pass: '#Puchki@113'
+    }
+});
 
 const ADMIN_EMAIL = 'h.h.anwar@gmail.com'
-// const ADMIN_EMAIL = 'ranjanjha111@gmail.com'
 
 const sendMail = (to, subject, body) => {
     const mailOptions = {
@@ -12,13 +18,13 @@ const sendMail = (to, subject, body) => {
         text: body,
     };
 
-    sgMail.send(mailOptions)
-    .then(response => {
-        console.log('mail sent.')
-    })
-    .catch(error => {
-        console.log(error.message)
-    })
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
 }
 
 const singupVerificationMail = (user, token) => {
