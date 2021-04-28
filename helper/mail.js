@@ -12,16 +12,13 @@ const sendMail = (to, subject, body) => {
         text: body,
     };
 
-    sgMail.send(mailOptions, (error, result) => {
-        // if (error) return res.status(500).json({success: false, error: error.message});
-        if (error) {
-            console.log(`Email error: ${error} `)
-            return {success: false, error: error.message};
-        }
-
-        console.log(`Mail sent: ${result} `)
-        return {success: true}
-    });
+    sgMail.send(mailOptions)
+    .then(response => {
+        console.log('mail sent.')
+    })
+    .catch(error => {
+        console.log(error.message)
+    })
 }
 
 const singupVerificationMail = (user, token) => {
