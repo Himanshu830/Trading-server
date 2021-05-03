@@ -1,6 +1,9 @@
 const { JsonWebTokenError } = require('jsonwebtoken');
 const User = require('../models/user');
 
+const { sendEmailVerificationMail, emailVerifiedMail } = require('../helper/mail')
+
+
 const userProfile = async (req, res) => {
     res.send(req.user);
 }
@@ -57,7 +60,12 @@ const getUsers = async (req, res) => {
 
 const updateUser = (req, res) => {
     // console.log('UPDATE USER - req.user', req.user, 'UPDATE DATA', req.body);
-    const { name, password, company, country } = req.body;
+    const { name, password, company, country, email } = req.body;
+
+    console.log(req.user.email, email)
+    if(req.user.email !== email) {
+        sendEmailVerificationMail(email, req.user, req.token)
+    }
 
     User.findOne({ _id: req.user._id }, (err, user) => {
         if (err || !user) {
@@ -104,10 +112,28 @@ const updateUser = (req, res) => {
     });
 };
 
+const verifyEmail = async (req, res) => {
+    try {
+        let user = req.user
+        if(!user) {
+            return res.status(400).send({error: 'Invalid verification link.'})
+        }
+
+        await user.save()
+
+        // send email
+        emailVerifiedMail(user)
+
+        res.send({success: true})
+    } catch (e) {
+        res.status(400).send({error: 'Invalid link'})
+    }
+}
 
 module.exports = {
     userProfile,
     getUser,
     getUsers,
     updateUser,
+    verifyEmail
  }

@@ -75,10 +75,31 @@ const sendContactMailToAdmin =(message) => {
     );
 }
 
+const sendEmailVerificationMail = (email, user, token) => {
+    let link = `${process.env.FRONT_END_URL}/verify/${email}/${token}`
+
+    return sendMail(
+        email,
+        `Email verification`,
+        `Hi ${user.name} \n Please click on the following link ${link} to udpate your email. \n\n `
+    );
+}
+
+const emailVerifiedMail = (user) => {
+    return sendMail(
+        user.email,
+        `Email verification confirmation`,
+        `Hi ${user.name} \n This is a confirmation that the your email ${user.email} has been verified.\n`
+    );
+
+}
+
 module.exports = {
     singupVerificationMail,
     singupVerifiedMail,
     forgotPasswordMail,
     resetPasswordConfirmationMail,
-    sendContactMailToAdmin
+    sendContactMailToAdmin,
+    sendEmailVerificationMail,
+    emailVerifiedMail
 };
