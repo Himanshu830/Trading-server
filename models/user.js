@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const { STATUS_ACTIVE, STATUS_INACTIVE } = require('../constant/status');
+const _ = require('lodash')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -34,27 +35,15 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    // company: {
-    //     _id: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: 'Company',
-    //       index: true
-    //     },
-    //     name: String,
-    //     type: String,
-    //     website: String,
-    //     address: String,
-    //     bio: String,
-    //     image: [String],
-    //     video: [String],
-    //     status: {
-    //       type: Number,
-    //       enum: [0, 1],
-    //       default: 1
-    //     },
-    // },
-
     country: String,
+    chatUsers: [{
+        userId:  {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            index: true
+        },
+        name: String
+    }],
     last_login: {
         type: Date,
         default: null
@@ -164,8 +153,23 @@ userSchema.statics.getUsers = async (user, { name, email, order="createdAt:desc"
             })
             .sort(sort)
             .exec();
-console.log(result)
         return result;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+userSchema.statics.udpateChatUsers = async (from , to) => {
+    try {
+        const user = await User.findById(from)
+        const toUser = await User.findById(to)
+
+        let users = user.chatUsers
+        _.remove(users, (user) => user.userId == to);
+        users = [{userId: to, name: toUser.name}, ...users]
+
+        user.chatUsers = users
+        await user.save()
     } catch (error) {
         console.log(error)
     }

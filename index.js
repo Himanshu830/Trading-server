@@ -58,6 +58,7 @@ const server = http.createServer(app)
 const io = socketio(server)
 
 const Chat = require('./models/chat')
+const User = require('./models/user')
 
 io.on('connection', (socket) => {
     console.log('New WebSocket connection')
@@ -74,15 +75,17 @@ io.on('connection', (socket) => {
         const chat = new Chat(message);
         chat.save()
             .then( data => {
+                User.udpateChatUsers(message.from, message.to).then(user => {
+                    console.log('Chat user updated.')
+                })
+
                 // io.emit('message', generateMessage('User', message.message))
                 // io.to(socket.id).emit('message', chat)
-
                 Chat.getMessagesByUsers(message.from, message.to).then(messages => {
                     // io.emit('message', messages)
                     // io.to(socket.id).emit('message', message)
 
                     io.sockets.in(message.to).emit('message', messages);
-
                     // io.sockets.in(message.to).emit('message', messages);
                     callback(null, messages)
                 });

@@ -61,15 +61,12 @@ const getChats = async (req, res) => {
 }
 
 const saveChat = async (req, res) => {
-    let message = {
-        message: req.body.message,
-        from: req.body.from,
-        to: req.body.to,
-        type: req.body.type
-    }
+    const { message, from, to, type } = req.body
+    let data = {message, from, to, type} 
 
-    const chat = new Chat(message)
+    const chat = new Chat(data)
     try {
+        await User.updateUserChatWith(to, from)
         await chat.save()
         res.status(201).json({ chat })
     } catch (e) {
