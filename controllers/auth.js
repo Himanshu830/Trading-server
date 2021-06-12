@@ -2,7 +2,7 @@ const User = require('../models/user')
 const Company = require('../models/company')
 const {
     singupVerificationMail,
-    singupVerifiedMail,
+    singupVerifiedMail,  
     forgotPasswordMail,
     resetPasswordConfirmationMail } = require('../helper/mail')
 

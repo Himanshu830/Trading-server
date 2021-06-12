@@ -11,7 +11,7 @@ const userProfile = async (req, res) => {
 const getUser = async (req, res) => {
     let user = req.user && req.user._id == req.params.id;
     if (!user) {
-        return res.status(403).json({
+        return res.status(403).json({  
             error: 'Access denied'
         });
     }

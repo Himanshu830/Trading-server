@@ -3,7 +3,7 @@ const express = require('express');
 const auth = require('../middleware/auth');
 const {
     listProduct,
-    getProductById,
+    getProductById,  
     createProduct,
     updateProduct,
     productById,

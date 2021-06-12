@@ -4,7 +4,7 @@ const auth = require('../middleware/auth')
 const activate = require('../middleware/activate')
 
 const {
-    signup,
+    signup,  
     signin,
     signout,
     signoutAll,

@@ -9,7 +9,7 @@ const {
     getChats,
     uploadFile
 } = require('../controllers/chat')
-
+  
 router.get('/chat/users', auth, getUsers);
 router.get('/chat/:userId', auth, getChats);
 router.post("/chat", auth, saveChat);

@@ -45,7 +45,7 @@ const sendContactMailToAdmin =(message) => {
         ADMIN_EMAIL,
         `Contact Us`,
         `${message}\n`
-    );
+    );  
 }
 
 module.exports = {

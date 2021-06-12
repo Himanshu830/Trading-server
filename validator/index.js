@@ -7,7 +7,7 @@ exports.emailValidator = (req, res, next) => {
     req.check('email', 'Email must be between 4 to 32 characters')
         .matches(/.+\@.+\..+/)
         .withMessage('Email must contain @')
-        .isLength({
+        .isLength({  
             min: 4,
             max: 32
         });

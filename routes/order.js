@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const {
     listOrder,
     getOrderById,
-    createOrder,
+    createOrder,  
     orderById,
     updateOrder,
     deleteOrderById } = require('../controllers/order');

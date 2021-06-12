@@ -8,7 +8,7 @@ const getCompany = async (req, res) => {
     if (!user || !user._id) {
         return res.status(403).json({
             error: 'Access denied'
-        });
+        });  
     }
     let company = await Company.findOne({userId: user._id})
     res.send(company)

@@ -9,7 +9,7 @@ const orderById = (req, res, next, id) => {
             return res.status(400).json({
                 error: 'Order not found'
             });
-        }
+        }  
         req.order = order;
         next();
     });

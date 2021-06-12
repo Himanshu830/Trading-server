@@ -7,5 +7,5 @@ const { companyValidator } = require("../validator")
 
 router.get("/company", auth, getCompany)
 router.patch("/company", auth, updateCompany)
-
+  
 module.exports = router;

@@ -6,5 +6,5 @@ const { contactUsValidator } = require('../validator');
 const { contactUs } = require('../controllers/contact')
 
 router.post('/contact', contactUsValidator, contactUs)
-
+  
 module.exports = router

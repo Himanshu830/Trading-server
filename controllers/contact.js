@@ -8,7 +8,7 @@ const contactUs = (req, res) => {
     const data = {
         company,
         subject,
-        message
+        message  
     }
 
     userId !== '' ? data.user = userId : ''

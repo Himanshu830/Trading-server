@@ -4,7 +4,7 @@ const isAdmin = require('../middleware/admin');
 const {
     saveCategory,
     updateCategory,
-    deleteCategory,
+    deleteCategory,  
     findCategory,
     listCategory,
      } = require('../controllers/category');

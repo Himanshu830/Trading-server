@@ -5,7 +5,7 @@ const listCategory = async (req, res) => {
     try {
         category = await Category.getActiveCategory(req.query);
         res.send({ "status": "success", "result": category });
-    } catch (error) {
+    } catch (error) {  
         res.status(500).send(error);
     }
 };

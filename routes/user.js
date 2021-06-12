@@ -5,7 +5,7 @@ const admin = require('../middleware/admin')
 const email = require('../middleware/email')
 
 const {
-    userProfile,
+    userProfile,  
     getUser,
     getUsers,
     updateUser,

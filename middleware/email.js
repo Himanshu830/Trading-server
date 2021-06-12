@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
-        if (!decoded) {
+        if (!decoded) {  
             throw new Error()
         }
 

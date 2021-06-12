@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
         const token = req.params.token;
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
 
-        if (!decoded) {
+        if (!decoded) {  
             throw new Error()
         }
 
